@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Passport Admin</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f4f4;
+margin:0;
+padding:20px;
+}
+.box{
+max-width:400px;
+margin:auto;
+background:#fff;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px #ccc;
+}
+h2{text-align:center;}
+input{
+width:100%;
+padding:10px;
+margin:8px 0;
+box-sizing:border-box;
+}
+button{
+width:100%;
+padding:12px;
+background:#2196F3;
+color:#fff;
+border:none;
+border-radius:5px;
+font-size:16px;
+cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="box">
+<h2>Passport Admin</h2>
+
+<input id="passport" placeholder="Passport Number">
+<input id="name" placeholder="Name">
+<input id="country" placeholder="Country">
+<input id="status" placeholder="Status">
+<input id="expire" placeholder="Date Expire">
+
+<button onclick="saveData()">Save Passport</button>
+
+<p id="msg"></p>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDLJAvAthqhP7SZvyS9fERysEHR9r9Cg3M",
+  authDomain: "visa-check-ef0b5.firebaseapp.com",
+  databaseURL: "https://visa-check-ef0b5-default-rtdb.firebaseio.com",
+  projectId: "visa-check-ef0b5",
+  storageBucket: "visa-check-ef0b5.firebasestorage.app",
+  messagingSenderId: "92226828872",
+  appId: "1:92226828872:web:88a32aa7c4e0704702f67d",
+  measurementId: "G-BLKZVYGJ9B"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+window.saveData = async function(){
+
+const passport=document.getElementById("passport").value.trim();
+
+await set(ref(db,"Passport/"+passport),{
+Name:document.getElementById("name").value,
+Country:document.getElementById("country").value,
+Status:document.getElementById("status").value,
+DateExpire:document.getElementById("expire").value
+});
+
+document.getElementById("msg").innerHTML="<b>Saved Successfully!</b>";
+
+};
+
+</script>
+
+</body>
+</html>
