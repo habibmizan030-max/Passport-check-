@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Passport Check</title>
+</head>
+<body>
+
+<h2>Passport Check</h2>
+
+<input type="text" id="passport" placeholder="Enter Passport Number">
+<button onclick="searchPassport()">Search</button>
+
+<div id="result"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDLJAvAthqhP7SZvyS9fERysEHR9r9Cg3M",
+  authDomain: "visa-check-ef0b5.firebaseapp.com",
+  databaseURL: "https://visa-check-ef0b5-default-rtdb.firebaseio.com",
+  projectId: "visa-check-ef0b5",
+  storageBucket: "visa-check-ef0b5.firebasestorage.app",
+  messagingSenderId: "92226828872",
+  appId: "1:92226828872:web:88a32aa7c4e0704702f67d",
+  measurementId: "G-BLKZVYGJ9B"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+window.searchPassport = async function () {
+  const passport = document.getElementById("passport").value.trim();
+  const snapshot = await get(ref(db, "Passport/" + passport));
+
+  if (snapshot.exists()) {
+    const d = snapshot.val();
+    document.getElementById("result").innerHTML = `
+      <h3>Name: ${d.Name || ""}</h3>
+      <p>Country: ${d.Country || ""}</p>
+      <p>Status: ${d.Status || ""}</p>
+      <p>Date Expire: ${d.DateExpire || ""}</p>
+    `;
+  } else {
+    document.getElementById("result").innerHTML = "<b>Passport not found!</b>";
+  }
+}
+</script>
+
+</body>
+</html>
